@@ -88,7 +88,7 @@ public class InputHandle {
             try {
                 System.out.print(inputMsg);
                 String inputStr = sc.nextLine();
-                if (inputStr.isBlank()) {
+                if (inputStr.isEmpty() || inputStr == null) {
                     throw new Exception();
                 }
                 return inputStr;

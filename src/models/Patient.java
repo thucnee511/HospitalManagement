@@ -21,7 +21,8 @@ public class Patient extends Person implements Serializable {
     public Patient() {
     }
 
-    public Patient(String id, String name, int age, String gender, String address, String phone, String diagnosis, Date addmissionDate, Date dischargeDate, Nurse nurseAssigned) {
+    public Patient(String id, String name, int age, String gender, String address, String phone, String diagnosis,
+            Date addmissionDate, Date dischargeDate, Nurse nurseAssigned) {
         super(id, name, age, gender, address, phone);
         this.diagnosis = diagnosis;
         this.addmissionDate = addmissionDate;
@@ -63,5 +64,13 @@ public class Patient extends Person implements Serializable {
 
     @Override
     public void show() {
+    }
+
+    @Override
+    public String toString() {
+        String str = String.format("%s,%s,%d,%s,%s,%s,%s,%s,%s,%s",
+                id, name, age, gender, address, phone, diagnosis, addmissionDate.toString(), dischargeDate.toString(),
+                nurseAssigned.getId());
+        return str;
     }
 }

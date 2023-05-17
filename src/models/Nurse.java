@@ -10,28 +10,29 @@ import java.io.Serializable;
  *
  * @author Administrator
  */
-public class Nurse extends Person implements Serializable{
+public class Nurse extends Person implements Serializable {
     private static final long serialVersionUID = 1L;
-    private String deparmnet ;
-    private String shift ;
-    private double salary ;
+    private String deparment;
+    private String shift;
+    private double salary;
 
     public Nurse() {
     }
 
-    public Nurse(String id, String name, int age, String gender, String address, String phone,String deparmnet, String shift, double salary) {
+    public Nurse(String id, String name, int age, String gender, String address, String phone, String deparment,
+            String shift, double salary) {
         super(id, name, age, gender, address, phone);
-        this.deparmnet = deparmnet;
+        this.deparment = deparment;
         this.shift = shift;
         this.salary = salary;
     }
 
-    public String getDeparmnet() {
-        return deparmnet;
+    public String getDeparment() {
+        return deparment;
     }
 
-    public void setDeparmnet(String deparmnet) {
-        this.deparmnet = deparmnet;
+    public void setDeparment(String deparment) {
+        this.deparment = deparment;
     }
 
     public String getShift() {
@@ -49,8 +50,18 @@ public class Nurse extends Person implements Serializable{
     public void setSalary(double salary) {
         this.salary = salary;
     }
-    
+
     @Override
     public void show() {
-    }    
+        String str = String.format("%s,%s,%d,%s,%s,%s,%s,%s,%f",
+                id, name, age, gender, address, phone, deparment, shift, salary);
+        System.out.println(str);
+    }
+
+    @Override
+    public String toString() {
+        String str = String.format("%s,%s,%d,%s,%s,%s,%s,%s,%f",
+                id, name, age, gender, address, phone, deparment, shift, salary);
+        return str;
+    }
 }
