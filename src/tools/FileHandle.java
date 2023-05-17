@@ -117,28 +117,4 @@ public class FileHandle {
         }
         return new String(ret);
     }
-
-    public static <T> void writeObjectToFile(String path, ArrayList<T> dta) {
-        String _path = initPath(path);
-        try {
-            FileOutputStream fos = new FileOutputStream(_path);
-            ObjectOutputStream oos = new ObjectOutputStream(fos) ;
-            oos.writeObject(dta);
-            oos.close() ;
-            fos.close() ;
-        }catch(IOException e){
-        }
-    }
-    
-    public static <T> ArrayList<T> readObjectFromFile(String path , T any){
-        String _path = initPath(path) ;
-        ArrayList<T> ret = null;
-        try{
-            FileInputStream fis = new FileInputStream(_path) ;
-            ObjectInputStream ois = new ObjectInputStream(fis) ;
-            ret = (ArrayList<T>) ois.readObject();
-        }catch(IOException | ClassNotFoundException e){           
-        }
-        return ret ;
-    }
 }

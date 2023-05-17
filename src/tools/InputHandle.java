@@ -4,6 +4,9 @@
  */
 package tools;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -62,6 +65,18 @@ public class InputHandle {
                 System.out.println(errorMsg);
             } catch (Exception e) {
                 System.out.println("Must be greater than 0!");
+            }
+        }
+    }
+
+    public static double getReal(String inputMsg, String errorMsg) {
+        while (true) {
+            try {
+                System.out.print(inputMsg);
+                double inputNum = Double.parseDouble(sc.nextLine());
+                return inputNum;
+            } catch (NumberFormatException e) {
+                System.out.println(errorMsg);
             }
         }
     }
@@ -146,54 +161,17 @@ public class InputHandle {
         }
     }
 
-    public static String getDate(String inputMsg, String dateFormat) {
+    public static Date getDate(String inputMsg) {
         while (true) {
             try {
                 System.out.print(inputMsg);
                 String inputStr = sc.nextLine();
-                if (checkValidDate(inputStr, dateFormat)) {
-                    return inputStr;
-                } else {
-                    throw new Exception();
-                }
+                DateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
+                formatter.setLenient(false);
+                return formatter.parse(inputStr);
             } catch (Exception e) {
-                System.out.println("Invalid date: " + dateFormat);
+                System.out.println("Invalid date: (yyyy/MM/dd)");
             }
         }
-    }
-
-    public static boolean checkValidDate(String date, String dateFormat) {
-        try {
-            if (!isValidDateFormat(date, dateFormat)) {
-                throw new IllegalArgumentException("Invalid date format");
-            }
-            int day, month, year;
-            String[] dateParts = date.split("[- /.]");
-            if (dateFormat.equals("mm/dd/yyyy")) {
-                day = Integer.parseInt(dateParts[0]);
-                month = Integer.parseInt(dateParts[1]);
-            } else {
-                day = Integer.parseInt(dateParts[1]);
-                month = Integer.parseInt(dateParts[0]);
-            }
-            year = Integer.parseInt(dateParts[2]);
-
-            if (month < 1 || month > 12) {
-                throw new IllegalArgumentException("Invalid month value");
-            }
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
-    private static final String DDMMYYYY_REGEX = "^(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\\d\\d$";
-    private static final String MMDDYYYY_REGEX = "^(0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])[- /.](19|20)\\d\\d$";
-
-    private static boolean isValidDateFormat(String date, String format) {
-        String regex = (format.equals("dd/mm/yyyy")) ? DDMMYYYY_REGEX : MMDDYYYY_REGEX;
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(date);
-        return matcher.matches();
     }
 }
