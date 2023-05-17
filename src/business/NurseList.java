@@ -42,4 +42,20 @@ public class NurseList extends HashMap<String , Nurse>{
             System.out.println("The nurse does not exist!");
         }
     }
+
+    private Nurse find(String id){
+        if (this.containsKey(id)) return this.get(id) ;
+        else return null ;
+    }
+
+    public void updateNurse(){
+        String id = InputHandle.getString("Enter staff id: ", "[N****], * as a number", "N\\d{4}");
+        Nurse n = find(id) ;
+        if (n != null){
+            System.out.println("Nurse found:\n" + n.toString() + "\n Updating nurse:");
+            
+        }else{
+            System.out.println("The nurse does not exist");
+        }
+    }
 }
