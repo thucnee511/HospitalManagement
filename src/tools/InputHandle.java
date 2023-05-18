@@ -5,6 +5,7 @@
 package tools;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Scanner;
@@ -164,11 +165,11 @@ public class InputHandle {
             try {
                 System.out.print(inputMsg);
                 String inputStr = sc.nextLine();
-                DateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
+                DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
                 formatter.setLenient(false);
                 return formatter.parse(inputStr);
-            } catch (Exception e) {
-                System.out.println("Invalid date: (yyyy/MM/dd)");
+            } catch (ParseException e) {
+                System.out.println("Invalid date: (dd/MM/yyyy)");
             }
         }
     }

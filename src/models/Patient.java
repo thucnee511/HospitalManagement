@@ -64,6 +64,9 @@ public class Patient extends Person implements Serializable {
 
     @Override
     public void show() {
+        String str = String.format("%10s|%14s|%15s|%-12s|-15s", 
+                id, addmissionDate.toString(), name, phone, diagnosis);
+        System.out.println(str);
     }
 
     @Override

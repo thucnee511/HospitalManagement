@@ -1,7 +1,12 @@
 package business;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import models.Nurse;
 import models.Patient;
@@ -14,7 +19,6 @@ public class PatientList extends HashMap<String, Patient>{
             id = InputHandle.getString("Enter id: ", "[P****], * as a number", "P\\d{4}");
             if (this.containsKey(id)) {
                 System.out.println("This staff already exist!");
-                continue;
             } else
                 break;
         }
@@ -39,10 +43,30 @@ public class PatientList extends HashMap<String, Patient>{
     }
 
     public void displayPatient(){
-
+        System.out.println("LIST OF PATIENT");
+        Date startDate = InputHandle.getDate("Start date: ");
+        Date endDate = InputHandle.getDate("End date: ");
+        String title = "No.|Patient Id|Admission Date|Full Name       |       Phone|Diagnosis" ;
+        System.out.println(title);
+        HashMap<Integer,Patient> displayingList = new HashMap<>() ;
+        List<Map.Entry<String,Patient>> _pList = new ArrayList<>(this.entrySet()) ;
+        Collections.sort(_pList, (Map.Entry<String,Patient> o1,Map.Entry<String,Patient> o2) -> (o1.getValue().getAddmissionDate().compareTo(o2.getValue().getAddmissionDate())));
+        int count = 1 ;
+        for(Map.Entry<String,Patient> item : _pList){
+            Date eleDate = item.getValue().getAddmissionDate() ;
+            if (startDate.before(eleDate) && eleDate.before(endDate)){
+                displayingList.put(count , item.getValue()) ;
+                count++ ;
+            }
+        }
+        for(Map.Entry<Integer,Patient> item : displayingList.entrySet()){
+            String msg = String.format("%-3d|",item.getKey()) ;
+            System.out.print(msg);
+            item.getValue().show();
+        }
     }
 
     public void sortPatient(){
-
+        
     }
 }
