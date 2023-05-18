@@ -19,9 +19,9 @@ public class NurseList extends HashMap<String, Nurse> {
         }
         String name = InputHandle.getString("Enter nurse's name: ", "This field cannot be empty!");
         int age = InputHandle.getPositiveInt("Enter nurse's age: ", "Must be a integer number!");
-        String gender = InputHandle.getString("Enter nurse's gender: ", "Male or Female", "[(Male)|(Female)]");
+        String gender = InputHandle.getString("Enter nurse's gender: ", "Male or Female", "(Male)|(Female)");
         String address = InputHandle.getString("Enter nurse's address: ", "This field cannot be empty!");
-        String phone = InputHandle.getString("Enter nurse's phone: ", "[0|(+84)]*********", "[9|(+84)]\\d{9}");
+        String phone = InputHandle.getString("Enter nurse's phone: ", "[0|(+84)]*********", "^((0)|(\\+84))\\d{9}");
         String deparment = InputHandle.getString("Enter nusre's deparment: ", "Length of deparment must be in [3,50]",
                 3, 50);
         String shift = InputHandle.getString("Enter nurse's shift: ", "This field cannot be empty!");
@@ -72,9 +72,9 @@ public class NurseList extends HashMap<String, Nurse> {
             try {
                 if (Integer.parseInt(age) <= 0)
                     throw new Exception("Age must be a positive integer number");
-                if (!gender.isEmpty() && !gender.matches("[(Male)|(Female)]"))
+                if (!gender.isEmpty() && !gender.matches("(Male)|(Female)"))
                     throw new Exception("Gender must be Male or Female");
-                if (!phone.isEmpty() && !phone.matches("[9|(+84)]\\d{9}"))
+                if (!phone.isEmpty() && !phone.matches("^((0)|(\\+84))\\d{9}"))
                     throw new Exception("Invalid phone number");
                 if (!deparment.isEmpty() && (deparment.length() < 3 || deparment.length() > 50))
                     throw new Exception("Deparment length must be in [3,50]");
