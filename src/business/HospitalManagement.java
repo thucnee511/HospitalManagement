@@ -1,22 +1,17 @@
 package business;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.Map.Entry;
 import models.Nurse;
 import models.Patient;
+import tools.FileHandle;
 
 public class HospitalManagement {
 
     NurseList nList = new NurseList();
     PatientList pList = new PatientList();
-    private final String nursePath = new File("").getAbsolutePath() + "\\src\\files\\nurses.dat";
-    private final String patientPath = new File("").getAbsolutePath() + "\\src\\files\\patients.dat";
+    private final String nursePath = "\\src\\files\\nurses.dat";
+    private final String patientPath = "\\src\\files\\patients.dat";
 
     public void addNewNurse() {
         nList.addNewNurse();
@@ -47,54 +42,51 @@ public class HospitalManagement {
     }
 
     public void saveData() {
-        System.out.println(nursePath + "\n" + patientPath + "\n");
-        try {
-            FileOutputStream nFos = new FileOutputStream(nursePath);
-            FileOutputStream pFos = new FileOutputStream(patientPath);
-            ObjectOutputStream nOos = new ObjectOutputStream(nFos);
-            ObjectOutputStream pOos = new ObjectOutputStream(pFos);
-//            for(Entry<String,Nurse> item : nList.entrySet()){
-//                nOos.writeObject(item.getValue());
-//            }
-//            for(Entry<String,Patient> item : pList.entrySet()){
-//                pOos.writeObject(item.getValue());
-//            }
-            nOos.writeObject(nList);
-            pOos.writeObject(pList);
-            nOos.close();
-            pOos.close();
-            nFos.close();
-            pFos.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+        ArrayList<String> dta = new ArrayList<>();
+        for (Entry<String, Nurse> item : nList.entrySet()) {
+            dta.add(item.getValue().toString());
         }
+        FileHandle.writeToFile(nursePath, dta);
+        dta.clear();
+        for (Entry<String, Patient> item : pList.entrySet()) {
+            dta.add(item.getValue().toString());
+        }
+        FileHandle.writeToFile(patientPath, dta);
+        System.out.println("Data saved successfully!");
     }
 
     public void loadData() {
         nList.clear();
         pList.clear();
-        try {
-            FileInputStream nFis = new FileInputStream(nursePath);
-            FileInputStream pFis = new FileInputStream(patientPath);
-            ObjectInputStream nOis = new ObjectInputStream(nFis);
-            ObjectInputStream pOis = new ObjectInputStream(pFis);
-//            Patient p;
-//            Nurse n;
-//            while ((p = (Patient) pOis.readObject()) != null) {
-//                pList.put(p.getId(), p);
-//            }
-//            while ((n = (Nurse) pOis.readObject()) != null) {
-//                nList.put(n.getId(), n);
-//            }
-            nList = (NurseList) nOis.readObject();
-            pList = (PatientList) pOis.readObject() ;
-            nOis.close();
-            pOis.close();
-            nFis.close();
-            pFis.close();
-
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
+        ArrayList<String> dta = new ArrayList<>();
+        dta.addAll(FileHandle.readFromFile(nursePath));
+        dta.addAll(FileHandle.readFromFile(patientPath));
+        for (String item : dta) {
+            String lineSplit[] = item.trim().split(",");
+            if (lineSplit[0].matches("N\\d{4}")) {
+                nList.put(lineSplit[0],
+                        new Nurse(lineSplit[0],
+                                lineSplit[1],
+                                Integer.parseInt(lineSplit[2]),
+                                lineSplit[3],
+                                lineSplit[4],
+                                lineSplit[5],
+                                lineSplit[6],
+                                lineSplit[7],
+                                Double.parseDouble(lineSplit[8])));
+            } else if (lineSplit[0].matches("P\\d{4}")) {
+                pList.put(lineSplit[0],
+                        new Patient(lineSplit[0],
+                                lineSplit[1],
+                                Integer.parseInt(lineSplit[2]),
+                                lineSplit[3],
+                                lineSplit[4],
+                                lineSplit[5],
+                                lineSplit[6],
+                                Patient.toDate(lineSplit[7]),
+                                Patient.toDate(lineSplit[8]),
+                                nList.get(lineSplit[9])));
+            }
         }
     }
 }

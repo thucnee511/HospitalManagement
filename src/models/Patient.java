@@ -68,6 +68,16 @@ public class Patient extends Person implements Serializable {
         String ret = sdf.format(date) ;
         return ret;
     }
+    
+    public static Date toDate(String date){
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy") ;
+        try{
+            Date ret = sdf.parse(date) ;
+            return ret ;
+        }catch(Exception e){}
+        return null ;
+    }
+    
     @Override
     public void show() {
         String str = String.format("%10s|%14s|%16s|%-12s|%-15s", 
@@ -75,11 +85,11 @@ public class Patient extends Person implements Serializable {
         System.out.println(str);
     }
 
-//    @Override
-//    public String toString() {
-//        String str = String.format("%s,%s,%d,%s,%s,%s,%s,%s,%s,%s",
-//                id, name, age, gender, address, phone, diagnosis, addmissionDate.toString(), dischargeDate.toString(),
-//                nurseAssigned.getId());
-//        return str;
-//    }
+    @Override
+    public String toString() {
+        String str = String.format("%s,%s,%d,%s,%s,%s,%s,%s,%s,%s",
+                id, name, age, gender, address, phone, diagnosis, formatPrintDate(addmissionDate), formatPrintDate(dischargeDate),
+                nurseAssigned.getId());
+        return str;
+    }
 }

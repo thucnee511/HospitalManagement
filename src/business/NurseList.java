@@ -7,6 +7,7 @@ import tools.InputHandle;
 import view.Menu;
 
 public class NurseList extends HashMap<String, Nurse> {
+
     public void addNewNurse() {
         String id = "";
         while (true) {
@@ -14,8 +15,9 @@ public class NurseList extends HashMap<String, Nurse> {
             if (this.containsKey(id)) {
                 System.out.println("This staff already exist!");
                 continue;
-            } else
+            } else {
                 break;
+            }
         }
         String name = InputHandle.getString("Enter nurse's name: ", "This field cannot be empty!");
         int age = InputHandle.getPositiveInt("Enter nurse's age: ", "Must be a integer number!");
@@ -47,10 +49,11 @@ public class NurseList extends HashMap<String, Nurse> {
     }
 
     public Nurse find(String id) {
-        if (this.containsKey(id))
+        if (this.containsKey(id)) {
             return this.get(id);
-        else
+        } else {
             return null;
+        }
     }
 
     public void updateNurse() {
@@ -70,38 +73,50 @@ public class NurseList extends HashMap<String, Nurse> {
 
             // check valid data
             try {
-                if (Integer.parseInt(age) <= 0)
+                if (!age.isEmpty() && Integer.parseInt(age) <= 0) {
                     throw new Exception("Age must be a positive integer number");
-                if (!gender.isEmpty() && !gender.matches("(Male)|(Female)"))
+                }
+                if (!gender.isEmpty() && !gender.matches("(Male)|(Female)")) {
                     throw new Exception("Gender must be Male or Female");
-                if (!phone.isEmpty() && !phone.matches("^((0)|(\\+84))\\d{9}"))
+                }
+                if (!phone.isEmpty() && !phone.matches("^((0)|(\\+84))\\d{9}")) {
                     throw new Exception("Invalid phone number");
-                if (!deparment.isEmpty() && (deparment.length() < 3 || deparment.length() > 50))
+                }
+                if (!deparment.isEmpty() && (deparment.length() < 3 || deparment.length() > 50)) {
                     throw new Exception("Deparment length must be in [3,50]");
-                if (Double.parseDouble(salary) < 0)
+                }
+                if (salary.isEmpty() && Double.parseDouble(salary) < 0) {
                     throw new Exception("Age must be a positive real number");
+                }
             } catch (Exception e) {
                 System.out.println("Update failed! " + e.getMessage());
                 return;
-            } finally {
-                if (!age.isEmpty())
-                    n.setAge(Integer.parseInt(age));
-                if (!name.isEmpty())
-                    n.setName(name);
-                if (!gender.isEmpty())
-                    n.setGender(gender);
-                if (!address.isEmpty())
-                    n.setAddress(address);
-                if (!phone.isEmpty())
-                    n.setPhone(phone);
-                if (!deparment.isEmpty())
-                    n.setDeparment(deparment);
-                if (!shift.isEmpty())
-                    n.setShift(shift);
-                if (!salary.isEmpty())
-                    n.setSalary(Double.parseDouble(salary));
-                System.out.println("Update successfully");
             }
+            if (!age.isEmpty()) {
+                n.setAge(Integer.parseInt(age));
+            }
+            if (!name.isEmpty()) {
+                n.setName(name);
+            }
+            if (!gender.isEmpty()) {
+                n.setGender(gender);
+            }
+            if (!address.isEmpty()) {
+                n.setAddress(address);
+            }
+            if (!phone.isEmpty()) {
+                n.setPhone(phone);
+            }
+            if (!deparment.isEmpty()) {
+                n.setDeparment(deparment);
+            }
+            if (!shift.isEmpty()) {
+                n.setShift(shift);
+            }
+            if (!salary.isEmpty()) {
+                n.setSalary(Double.parseDouble(salary));
+            }
+            System.out.println("Update successfully");
         } else {
             System.out.println("The nurse does not exist");
         }
@@ -115,13 +130,15 @@ public class NurseList extends HashMap<String, Nurse> {
             if (Menu.getYesOrNo("Do you want to delete this nurse?")) {
                 try {
                     for (Entry<String, Patient> item : pList.entrySet()) {
-                        if (item.getValue().getNurseAssigned() == n) throw new Exception("This nurse is having patient(s)");
+                        if (item.getValue().getNurseAssigned() == n) {
+                            throw new Exception("This nurse is having patient(s)");
+                        }
                     }
                 } catch (Exception e) {
-                    System.out.println("Delete failed! "+e.getMessage());
-                    return ;
-                }finally{
-                    this.remove(n.getId(), n) ;
+                    System.out.println("Delete failed! " + e.getMessage());
+                    return;
+                } finally {
+                    this.remove(n.getId(), n);
                 }
             }
         } else {

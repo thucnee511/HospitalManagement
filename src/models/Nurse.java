@@ -58,10 +58,10 @@ public class Nurse extends Person implements Serializable {
         System.out.println(str);
     }
 
-//    @Override
-//    public String toString() {
-//        String str = String.format("%s,%s,%d,%s,%s,%s,%s,%s,%f",
-//                id, name, age, gender, address, phone, deparment, shift, salary);
-//        return str;
-//    }
+    @Override
+    public String toString() {
+        String str = String.format("%s,%s,%d,%s,%s,%s,%s,%s,%f",
+                id, name, age, gender, address, phone, deparment, shift, salary);
+        return str;
+    }
 }

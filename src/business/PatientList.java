@@ -29,8 +29,8 @@ public class PatientList extends HashMap<String, Patient>{
         String address = InputHandle.getString("Enter patient's address: ", "This field cannot be empty!");
         String phone = InputHandle.getString("Enter patient's phone: ", "0|(+84)*********", "^((0)|(\\+84))\\d{9}");
         String diagnosis = InputHandle.getString("Enter patient's diagnosis: ", "This field cannot be empty!");
-        Date admissionDate = InputHandle.getDate("Enter admission date (yyyy/MM/dd): ");
-        Date dischargDate = InputHandle.getDate("Enter discharge date (yyyy/MM/dd): ");
+        Date admissionDate = InputHandle.getDate("Enter admission date (dd/MM/yyyy): ");
+        Date dischargDate = InputHandle.getDate("Enter discharge date (dd/MM/yyyy): ");
         Nurse nurse = null;
         while(true){
             String nId = InputHandle.getString("Enter nurse assigned's id: ", "[N****], * as a number", "N\\d{4}");
