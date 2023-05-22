@@ -11,10 +11,12 @@ import java.io.Serializable;
  * @author Administrator
  */
 public class Nurse extends Person implements Serializable {
+
     private static final long serialVersionUID = 1L;
     private String deparment;
     private String shift;
     private double salary;
+    private int numPatientAssign;
 
     public Nurse() {
     }
@@ -25,6 +27,19 @@ public class Nurse extends Person implements Serializable {
         this.deparment = deparment;
         this.shift = shift;
         this.salary = salary;
+        numPatientAssign = 0;
+    }
+
+    public int getNumPatientAssign() {
+        return numPatientAssign;
+    }
+
+    public void incNumPatientAssign() {
+        this.numPatientAssign++;
+    }
+    
+    public void decNumPatientAssign() {
+        this.numPatientAssign--;
     }
 
     public String getDeparment() {

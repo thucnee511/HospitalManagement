@@ -7,6 +7,8 @@ package models;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map.Entry;
 
 /**
  *
@@ -17,18 +19,18 @@ public class Patient extends Person implements Serializable {
     private String diagnosis;
     private Date addmissionDate;
     private Date dischargeDate;
-    private Nurse nurseAssigned;
+    private HashMap<String,Nurse> nursesAssigned = new HashMap<>() ;
 
     public Patient() {
     }
 
     public Patient(String id, String name, int age, String gender, String address, String phone, String diagnosis,
-            Date addmissionDate, Date dischargeDate, Nurse nurseAssigned) {
+            Date addmissionDate, Date dischargeDate , HashMap<String,Nurse> nursesAssigned) {
         super(id, name, age, gender, address, phone);
         this.diagnosis = diagnosis;
         this.addmissionDate = addmissionDate;
         this.dischargeDate = dischargeDate;
-        this.nurseAssigned = nurseAssigned;
+        this.nursesAssigned = nursesAssigned ;
     }
 
     public String getDiagnosis() {
@@ -55,12 +57,12 @@ public class Patient extends Person implements Serializable {
         this.dischargeDate = dischargeDate;
     }
 
-    public Nurse getNurseAssigned() {
-        return nurseAssigned;
+    public HashMap<String, Nurse> getNursesAssigned() {
+        return nursesAssigned;
     }
 
-    public void setNurseAssigned(Nurse nurseAssigned) {
-        this.nurseAssigned = nurseAssigned;
+    public void setNursesAssigned(HashMap<String, Nurse> nursesAssigned) {
+        this.nursesAssigned = nursesAssigned;
     }
 
     public String formatPrintDate(Date date){
@@ -84,12 +86,20 @@ public class Patient extends Person implements Serializable {
                 id, formatPrintDate(addmissionDate), name, phone, diagnosis);
         System.out.println(str);
     }
+    
+    private String toStringNursesAssigned(){
+        String str = "";
+        for(Entry<String,Nurse> item : nursesAssigned.entrySet()){
+            str += String.format("%s|",item.getKey());
+        }
+        return str ;
+    }
 
     @Override
     public String toString() {
         String str = String.format("%s,%s,%d,%s,%s,%s,%s,%s,%s,%s",
                 id, name, age, gender, address, phone, diagnosis, formatPrintDate(addmissionDate), formatPrintDate(dischargeDate),
-                nurseAssigned.getId());
+                toStringNursesAssigned());
         return str;
     }
 }

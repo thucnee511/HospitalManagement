@@ -130,7 +130,7 @@ public class NurseList extends HashMap<String, Nurse> {
             if (Menu.getYesOrNo("Do you want to delete this nurse?")) {
                 try {
                     for (Entry<String, Patient> item : pList.entrySet()) {
-                        if (item.getValue().getNurseAssigned() == n) {
+                        if (item.getValue().getNursesAssigned().containsKey(n.getId())) {
                             throw new Exception("This nurse is having patient(s)");
                         }
                     }

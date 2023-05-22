@@ -1,6 +1,7 @@
 package business;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map.Entry;
 import models.Nurse;
 import models.Patient;
@@ -75,6 +76,11 @@ public class HospitalManagement {
                                 lineSplit[7],
                                 Double.parseDouble(lineSplit[8])));
             } else if (lineSplit[0].matches("P\\d{4}")) {
+                String[] nll = lineSplit[9].split("|") ;
+                HashMap<String,Nurse> nl = new HashMap<>();
+                for(String n : nll){
+                    nl.put(n, nList.find(n));
+                }
                 pList.put(lineSplit[0],
                         new Patient(lineSplit[0],
                                 lineSplit[1],
@@ -85,7 +91,7 @@ public class HospitalManagement {
                                 lineSplit[6],
                                 Patient.toDate(lineSplit[7]),
                                 Patient.toDate(lineSplit[8]),
-                                nList.get(lineSplit[9])));
+                                nl));
             }
         }
     }
