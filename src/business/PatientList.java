@@ -38,10 +38,10 @@ public class PatientList extends HashMap<String, Patient> {
         while (true) {
             Nurse nurse = null;
             String nId = InputHandle.getString("Enter nurse assigned's id: ", "[N****], * as a number", "N\\d{4}");
-            if ((nurse = nList.find(nId)) != null) {
+            if ((nurse = nList.find(nId)) != null) 
                 if (nurse.getNumPatientAssign() < 2) {
                     nl.put(nId, nurse);
-                    nurse.incNumPatientAssign();
+                    nurse.incNumPatientAssign(); 
                     count++;
                 }else{
                     System.out.println("This nurse already assigned 2 patients!");
@@ -49,107 +49,91 @@ public class PatientList extends HashMap<String, Patient> {
             } else {
                 System.out.println("This nurse does not exist");
             }
-            if (count >= 2 && !Menu.getYesOrNo("Add more nurse assigned?")) {
+            if (count == 2 ) {
                 break;
             }
         }
         this.put(id, new Patient(id, name, age, gender, address, phone, diagnosis, admissionDate, dischargDate, nl));
     }
-
     public void displayPatient() {
         System.out.println("LIST OF PATIENT");
         Date startDate = InputHandle.getDate("Start date: ");
         Date endDate = InputHandle.getDate("End date: ");
         String title = "No.|Patient Id|Admission Date|Full Name       |       Phone|Diagnosis";
         System.out.println(title);
-        HashMap<Integer, Patient> displayingList = new HashMap<>();
+        List<Patient> displayingList = new ArrayList<>();
         List<Map.Entry<String, Patient>> _pList = new ArrayList<>(this.entrySet());
         Collections.sort(_pList, (Map.Entry<String, Patient> o1, Map.Entry<String, Patient> o2) -> (o1.getValue().getAddmissionDate().compareTo(o2.getValue().getAddmissionDate())));
-        int count = 1;
         for (Map.Entry<String, Patient> item : _pList) {
             Date eleDate = item.getValue().getAddmissionDate();
-            if (startDate.before(eleDate) && eleDate.before(endDate)) {
-                displayingList.put(count, item.getValue());
-                count++;
+            if (isInDateRange(startDate, endDate, eleDate)) 
+                displayingList.add(item.getValue());
             }
         }
-        for (Map.Entry<Integer, Patient> item : displayingList.entrySet()) {
-            String msg = String.format("%-3d|", item.getKey());
-            System.out.print(msg);
-            item.getValue().show();
-        }
+        print(displayingList);
     }
-
+    public boolean isInDateRange(Date sDate , Date eDate , Date pDate){
+        boolean isBeforeEnd = pDate.equals(eDate) || pDate.before(eDate);
+        boolean isAfterStart = pDate.equals(sDate) || pDate.after(sDate);
+        return isBeforeEnd && isAfterStart ;
+    }
     public void sortPatient() {
         System.out.println("LIST OF PATIENT");
         Menu sortingBy = new Menu("Sort by:");
         sortingBy.addOption("Patient Id");
-        sortingBy.addOption("Admission date");
         sortingBy.addOption("Name");
-        sortingBy.addOption("Phone");
-        sortingBy.addOption("Diagnosis");
         Menu sortingOrder = new Menu("Sort order:");
         sortingOrder.addOption("ASC");
         sortingOrder.addOption("DESC");
         sortingBy.printMenu();
         int sBy = sortingBy.getChoice();
+        sortingOrder.printMenu();
         boolean sOr = sortingOrder.getChoice() == 1;
-        List<Entry<String, Patient>> displayList = new ArrayList<>(this.entrySet());
+        System.out.println("Sort by: " + sortingBy.getChoice(sBy - 1));
+        System.out.println("Sort order: " + sortingOrder.getChoice(sOr ? 0 : 1));
+        List<Patient> displayList = new ArrayList<>(this.values());
         switch (sBy) {
             case 1: {
-                if (sOr) {
-                    Collections.sort(displayList,
-                            (Entry<String, Patient> o1, Entry<String, Patient> o2) -> (o1.getValue().getId().compareTo(o2.getValue().getId())));
-                } else {
-                    Collections.sort(displayList,
-                            (Entry<String, Patient> o1, Entry<String, Patient> o2) -> -(o1.getValue().getId().compareTo(o2.getValue().getId())));
-                }
+                Comparator<Patient> cmp = (o1, o2) -> o1.getId().compareTo(o2.getId()) ;
+                displayList = sort(displayList, cmp, sOr);
+                print(displayList);
+                break ;
             }
             case 2: {
-                if (sOr) {
-                    Collections.sort(displayList,
-                            (Entry<String, Patient> o1, Entry<String, Patient> o2) -> (o1.getValue().getAddmissionDate().compareTo(o2.getValue().getAddmissionDate())));
-                } else {
-                    Collections.sort(displayList,
-                            (Entry<String, Patient> o1, Entry<String, Patient> o2) -> -(o1.getValue().getAddmissionDate().compareTo(o2.getValue().getAddmissionDate())));
-                }
+                Comparator<Patient> cmp =(o1, o2) -> o1.getName().compareTo(o2.getName()) ;
+                displayList = sort(displayList, cmp, sOr);
+                print(displayList);
+                break ;
             }
-            case 3: {
-                if (sOr) {
-                    Collections.sort(displayList,
-                            (Entry<String, Patient> o1, Entry<String, Patient> o2) -> (o1.getValue().getName().compareTo(o2.getValue().getName())));
-                } else {
-                    Collections.sort(displayList,
-                            (Entry<String, Patient> o1, Entry<String, Patient> o2) -> -(o1.getValue().getName().compareTo(o2.getValue().getName())));
+        }
+    }
+    
+    private List<Patient> sort(List<Patient> pList , Comparator<Patient> cmp , boolean asc){
+        for(int i = 0 ; i < pList.size()-1 ; i++){
+            for(int j = i+1 ; j < pList.size() ; j++){
+                boolean swap;
+                if(asc){
+                    swap = cmp.compare(pList.get(i), pList.get(j)) > 0 ;
+                }else{
+                    swap = cmp.compare(pList.get(i), pList.get(j)) < 0 ;
                 }
-            }
-            case 4: {
-                if (sOr) {
-                    Collections.sort(displayList,
-                            (Entry<String, Patient> o1, Entry<String, Patient> o2) -> (o1.getValue().getPhone().compareTo(o2.getValue().getPhone())));
-                } else {
-                    Collections.sort(displayList,
-                            (Entry<String, Patient> o1, Entry<String, Patient> o2) -> -(o1.getValue().getPhone().compareTo(o2.getValue().getPhone())));
-                }
-            }
-            case 5: {
-                if (sOr) {
-                    Collections.sort(displayList,
-                            (Entry<String, Patient> o1, Entry<String, Patient> o2) -> (o1.getValue().getDiagnosis().compareTo(o2.getValue().getDiagnosis())));
-                } else {
-                    Collections.sort(displayList,
-                            (Entry<String, Patient> o1, Entry<String, Patient> o2) -> -(o1.getValue().getDiagnosis().compareTo(o2.getValue().getDiagnosis())));
+                if(swap){
+                    Collections.swap(pList , i , j) ;
                 }
             }
         }
+        return pList ;
+    }
+    
+    private void print(List<Patient> displayList){
         String title = "No.|Patient Id|Admission Date|Full Name       |       Phone|Diagnosis";
         System.out.println(title);
         int count = 1;
-        for (Entry<String, Patient> item : displayList) {
+        for (Patient item : displayList) {
             String msg = String.format("%-3d|", count);
             count++;
             System.out.print(msg);
-            item.getValue().show();
+            item.show();
         }
     }
 }
