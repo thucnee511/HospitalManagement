@@ -82,8 +82,8 @@ public class Patient extends Person implements Serializable {
     
     @Override
     public void show() {
-        String str = String.format("%10s|%14s|%16s|%-12s|%-15s", 
-                id, formatPrintDate(addmissionDate), name, phone, diagnosis);
+        String str = String.format("%10s|%14s|%16s|%-12s|%-15s|%s", 
+                id, formatPrintDate(addmissionDate), name, phone, diagnosis,toStringNursesAssigned());
         System.out.println(str);
     }
     

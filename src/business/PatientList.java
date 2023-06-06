@@ -126,7 +126,7 @@ public class PatientList extends HashMap<String, Patient> {
     }
     
     private void print(List<Patient> displayList){
-        String title = "No.|Patient Id|Admission Date|Full Name       |       Phone|Diagnosis";
+        String title = "No.|Patient Id|Admission Date|Full Name       |       Phone|Diagnosis      |Nurses Assigned";
         System.out.println(title);
         int count = 1;
         for (Patient item : displayList) {
